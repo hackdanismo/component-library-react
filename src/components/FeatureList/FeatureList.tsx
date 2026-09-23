@@ -41,6 +41,7 @@ export function FeatureList({
         {Array.from({ length: emptySlots }).map((_, index) => (
           <div
             key={`empty-${index}`}
+            data-testid="feature-placeholder"
             aria-hidden="true"
             className="
               h-9

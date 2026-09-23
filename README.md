@@ -457,3 +457,155 @@ export default preview;
 ```
 
 It is also worth removing the default `src/stories` folder generated when `Storybook` was installed as this contains the stories for the default example components that were removed and our components have the `.stories.tsx` files next to the component file.
+
+### Testing
+Each component should have a test file to check the quality of the code and check for any issues/bugs. Since we already have `@storybook/addon-vitest`, we are using `Vitest` with `React Testing Library` alongside `@testing-library/user-event` for the component tests:
+
+```shell
+$ npm install -D vitest@4.1.11 jsdom @testing-library/react @testing-library/jest-dom @testing-library/user-event
+```
+
+Ensure the version of `Vitest` matches the `Storbook Vitest` version, currently at `4.1.11`.
+
+Then once the dependencies are installed, add a test setup file:
+
+```typescript
+// src/test/setup.ts
+
+import "@testing-library/jest-dom/vitest";
+```
+
+Within the `vite.config.ts` file, make sure `Vitest` uses `jsdom`:
+
+```typescript
+/// <reference types="vitest/config" />
+
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+import dts from "vite-plugin-dts";
+
+import { fileURLToPath, URL } from "node:url";
+import path from "node:path";
+
+import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
+import { playwright } from "@vitest/browser-playwright";
+
+const dirname =
+  typeof __dirname !== "undefined"
+    ? __dirname
+    : path.dirname(fileURLToPath(import.meta.url));
+
+export default defineConfig({
+  plugins: [
+    react(),
+    tailwindcss(),
+
+    dts({
+      insertTypesEntry: true,
+    }),
+  ],
+
+  build: {
+    lib: {
+      entry: fileURLToPath(
+        new URL("./src/index.ts", import.meta.url)
+      ),
+      formats: ["es", "cjs"],
+      fileName: (format) => `index.${format}.js`,
+    },
+
+    rollupOptions: {
+      external: ["react", "react-dom"],
+    },
+  },
+
+  test: {
+    projects: [
+      // ---------------------------------------
+      // Component / unit tests
+      // ---------------------------------------
+      {
+        extends: true,
+
+        test: {
+          name: "unit",
+
+          environment: "jsdom",
+
+          setupFiles: [
+            "./src/test/setup.ts",
+          ],
+
+          include: [
+            "src/**/*.test.{ts,tsx}",
+          ],
+        },
+      },
+
+      // ---------------------------------------
+      // Storybook tests
+      // ---------------------------------------
+      {
+        extends: true,
+
+        plugins: [
+          storybookTest({
+            configDir: path.join(
+              dirname,
+              ".storybook"
+            ),
+          }),
+        ],
+
+        test: {
+          name: "storybook",
+
+          browser: {
+            enabled: true,
+            headless: true,
+
+            provider: playwright({}),
+
+            instances: [
+              {
+                browser: "chromium",
+              },
+            ],
+          },
+        },
+      },
+    ],
+  },
+});
+```
+
+Update the scripts in the `package.json` file to run the tests:
+
+```json
+{
+  "scripts": {
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage"
+  }
+}
+```
+
+Then within each component file, add a `.test.tsx` file, for example, `Button.test.tsx`.
+
+To run the tests:
+
+```shell
+$ npm run test
+# Run a one-off CI-style:
+$ npm run test:run
+```
+
+Keep small unit tests on primitives such as `Button` and `FeatureItem`. Use **integration tests** for composed components like `Card`, `Checkout` and `PurchaseFlow`.
+
+It maybe also worthwhile installing `Playwright`:
+
+```shell
+$ npx playwright install 
+```

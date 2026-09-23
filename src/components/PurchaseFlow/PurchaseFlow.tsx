@@ -1,5 +1,3 @@
-// src/components/PurchaseFlow/PurchaseFlow.tsx
-
 import { useState } from "react";
 
 import { Card } from "../Card/Card";
