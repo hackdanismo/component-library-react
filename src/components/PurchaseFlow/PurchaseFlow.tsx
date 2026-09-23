@@ -90,6 +90,7 @@ export function PurchaseFlow({
     setPaymentMethod(undefined);
     setPaymentStatus("idle");
     setOrderReference(undefined);
+    setIsLeavingCards(false);
   };
 
   const handlePayment = async () => {
@@ -120,6 +121,7 @@ export function PurchaseFlow({
     setPaymentMethod(undefined);
     setPaymentStatus("idle");
     setOrderReference(undefined);
+    setIsLeavingCards(false);
   };
 
   if (
@@ -326,9 +328,11 @@ export function PurchaseFlow({
   return (
     <div
       className={`
-        ${isLeavingCards
-          ? "purchase-flow-exit pointer-events-none"
-          : ""}
+        ${
+          isLeavingCards
+            ? "purchase-flow-exit pointer-events-none"
+            : ""
+        }
         ${className}
       `}
     >
