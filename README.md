@@ -276,6 +276,12 @@ Or, custom classes:
 </Button>
 ```
 
+After adding a new component to `src/index.ts`, which allows consumers of the `NPM` package can import individual components, run the `build` command as this will catch any missing exports or incorrect paths before the package is published.
+
+```shell
+$ npm run build
+```
+
 ### Storybook
 `Storybook` allows us to see each component render in isolation without needing a separate app. From inside the component library, run:
 
@@ -449,3 +455,5 @@ const preview: Preview = {
 
 export default preview;
 ```
+
+It is also worth removing the default `src/stories` folder generated when `Storybook` was installed as this contains the stories for the default example components that were removed and our components have the `.stories.tsx` files next to the component file.
