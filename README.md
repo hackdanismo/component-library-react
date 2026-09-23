@@ -1030,3 +1030,51 @@ $ npm run lint
 # Auto-fix any issues, where possible
 $ npm run lint:fix
 ```
+
+## CI
+To add `CI` to the project, create a folder in the project root named `.github/workflows`. Inside this create a file named `ci.yml` and add the following code:
+
+```yaml
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+  push:
+    branches:
+      - main
+
+jobs:
+  validate:
+    name: Lint, Test and Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run tests
+        run: npm run test:run
+
+      - name: Build library
+        run: npm run build
+```
+
+When code/branch is merged into `main`, the workflow will run and check `ESLint`, Tests and run the `build` to check for issues/errors before merging to production.
