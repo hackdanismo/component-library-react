@@ -1,1 +1,57 @@
 @import "tailwindcss";
+
+@keyframes purchase-flow-exit {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.98);
+  }
+}
+
+@keyframes purchase-flow-enter {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes purchase-flow-success {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .purchase-flow-exit,
+  .purchase-flow-enter,
+  .purchase-flow-success {
+    animation: none !important;
+  }
+}
+
+.purchase-flow-exit {
+  animation: purchase-flow-exit 200ms ease-in forwards;
+}
+
+.purchase-flow-enter {
+  animation: purchase-flow-enter 350ms ease-out both;
+}
+
+.purchase-flow-success {
+  animation: purchase-flow-success 400ms ease-out both;
+}

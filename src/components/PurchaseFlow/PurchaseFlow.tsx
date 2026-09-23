@@ -66,6 +66,32 @@ export function PurchaseFlow({
   const [orderReference, setOrderReference] =
     useState<string>();
 
+  const [isLeavingCards, setIsLeavingCards] =
+    useState(false);
+
+  const handleSelectPackage = (
+    pkg: PurchaseFlowPackage
+  ) => {
+    if (isLeavingCards) {
+      return;
+    }
+
+    setIsLeavingCards(true);
+
+    window.setTimeout(() => {
+      setSelectedPackage(pkg);
+      setPaymentStatus("idle");
+      setIsLeavingCards(false);
+    }, 200);
+  };
+
+  const handleRemovePackage = () => {
+    setSelectedPackage(null);
+    setPaymentMethod(undefined);
+    setPaymentStatus("idle");
+    setOrderReference(undefined);
+  };
+
   const handlePayment = async () => {
     if (!selectedPackage) {
       return;
@@ -103,6 +129,7 @@ export function PurchaseFlow({
     return (
       <div
         className={`
+          purchase-flow-success
           mx-auto
           w-full
           max-w-3xl
@@ -152,8 +179,10 @@ export function PurchaseFlow({
           </h2>
 
           <p className="mt-2 text-gray-600">
-            Thanks, {businessDetails.contactName || "your order"} has
-            been successfully submitted.
+            Thanks,{" "}
+            {businessDetails.contactName ||
+              "your order"}{" "}
+            has been successfully submitted.
           </p>
 
           <div
@@ -165,13 +194,7 @@ export function PurchaseFlow({
               text-left
             "
           >
-            <h3
-              className="
-                text-lg
-                font-bold
-                text-[#14152f]
-              "
-            >
+            <h3 className="text-lg font-bold text-[#14152f]">
               Order summary
             </h3>
 
@@ -216,8 +239,10 @@ export function PurchaseFlow({
                 </dt>
 
                 <dd className="font-semibold capitalize text-[#14152f]">
-                  {paymentMethod?.replace("-", " ") ??
-                    "Not specified"}
+                  {paymentMethod?.replace(
+                    "-",
+                    " "
+                  ) ?? "Not specified"}
                 </dd>
               </div>
 
@@ -236,8 +261,9 @@ export function PurchaseFlow({
           </div>
 
           <p className="mt-6 text-sm text-gray-500">
-            This is currently using a simulated payment
-            gateway. No real payment has been taken.
+            This is currently using a simulated
+            payment gateway. No real payment has been
+            taken.
           </p>
 
           <Button
@@ -254,7 +280,12 @@ export function PurchaseFlow({
 
   if (selectedPackage) {
     return (
-      <div className={className}>
+      <div
+        className={`
+          purchase-flow-enter
+          ${className}
+        `}
+      >
         <Checkout
           package={selectedPackage}
           businessDetails={businessDetails}
@@ -265,9 +296,9 @@ export function PurchaseFlow({
           onPaymentMethodChange={
             setPaymentMethod
           }
-          onRemovePackage={() => {
-            setSelectedPackage(null);
-          }}
+          onRemovePackage={
+            handleRemovePackage
+          }
           onComplete={handlePayment}
           isProcessing={
             paymentStatus === "processing"
@@ -293,7 +324,14 @@ export function PurchaseFlow({
   }
 
   return (
-    <div className={className}>
+    <div
+      className={`
+        ${isLeavingCards
+          ? "purchase-flow-exit pointer-events-none"
+          : ""}
+        ${className}
+      `}
+    >
       <CardContainer columns={columns}>
         {packages.map((pkg) => (
           <Card
@@ -309,10 +347,8 @@ export function PurchaseFlow({
             primaryAction={{
               label: "Order now",
               icon: "↗",
-              onClick: () => {
-                setSelectedPackage(pkg);
-                setPaymentStatus("idle");
-              },
+              onClick: () =>
+                handleSelectPackage(pkg),
             }}
             secondaryAction={{
               label: `Explore ${pkg.title}`,
