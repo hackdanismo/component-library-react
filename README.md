@@ -1,1 +1,1 @@
-# component-library-react
+# Component Library: React
