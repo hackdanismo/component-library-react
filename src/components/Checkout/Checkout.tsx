@@ -64,22 +64,26 @@ export function Checkout({
           lg:grid-cols-2
         "
       >
-        <BusinessDetailsForm
-          value={businessDetails}
-          onChange={onBusinessDetailsChange}
-          onAddAddressManually={onAddAddressManually}
-          className="h-full"
-        />
+        <div className="order-2 lg:order-1">
+          <BusinessDetailsForm
+            value={businessDetails}
+            onChange={onBusinessDetailsChange}
+            onAddAddressManually={onAddAddressManually}
+            className="h-full"
+          />
+        </div>
 
-        <BasketSummary
-          package={selectedPackage}
-          paymentMethod={paymentMethod}
-          onPaymentMethodChange={
-            onPaymentMethodChange
-          }
-          onRemove={onRemovePackage}
-          className="h-full"
-        />
+        <div className="order-1 lg:order-2">
+          <BasketSummary
+            package={selectedPackage}
+            paymentMethod={paymentMethod}
+            onPaymentMethodChange={
+              onPaymentMethodChange
+            }
+            onRemove={onRemovePackage}
+            className="h-full"
+          />
+        </div>
       </div>
     </section>
   );
