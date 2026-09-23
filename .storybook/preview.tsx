@@ -5,6 +5,19 @@ import "../src/styles.css";
 
 const preview: Preview = {
   parameters: {
+    backgrounds: {
+      default: "dark",
+      values: [
+        {
+          name: "dark",
+          value: "#080b25",
+        },
+        {
+          name: "light",
+          value: "#ffffff",
+        },
+      ],
+    },
     controls: {
       matchers: {
        color: /(background|color)$/i,

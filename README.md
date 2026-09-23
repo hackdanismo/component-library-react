@@ -407,3 +407,45 @@ const config: StorybookConfig = {
 
 export default config;
 ```
+
+To set dark mode in `Storybook`, update the `.storybook/preview.tsx` file:
+
+```typescript
+import type { Preview } from '@storybook/react-vite'
+
+// Import the styles and Tailwind CSS from the component library into Storybook
+import "../src/styles.css";
+
+const preview: Preview = {
+  parameters: {
+    backgrounds: {
+      default: "dark",
+      values: [
+        {
+          name: "dark",
+          value: "#080b25",
+        },
+        {
+          name: "light",
+          value: "#ffffff",
+        },
+      ],
+    },
+    controls: {
+      matchers: {
+       color: /(background|color)$/i,
+       date: /Date$/i,
+      },
+    },
+
+    a11y: {
+      // 'todo' - show a11y violations in the test UI only
+      // 'error' - fail CI on a11y violations
+      // 'off' - skip a11y checks entirely
+      test: 'todo'
+    }
+  },
+};
+
+export default preview;
+```

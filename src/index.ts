@@ -8,3 +8,5 @@ export type { SectionIntroProps } from "./components/SectionIntro/SectionIntro";
 export { CardHeader } from "./components/CardHeader/CardHeader";
 export type { CardHeaderProps } from "./components/CardHeader/CardHeader";
 export { WifiIcon } from "./components/WifiIcon/WifiIcon";
+export { FeatureList } from "./components/FeatureList/FeatureList";
+export type { FeatureListProps, Feature } from "./components/FeatureList/FeatureList";
