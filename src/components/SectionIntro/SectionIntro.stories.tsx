@@ -1,6 +1,4 @@
-// src/components/SectionIntro/SectionIntro.stories.tsx
-
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SectionIntro } from "./SectionIntro";
 
 const meta: Meta<typeof SectionIntro> = {
