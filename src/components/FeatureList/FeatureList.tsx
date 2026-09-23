@@ -9,14 +9,18 @@ export interface Feature {
 export interface FeatureListProps {
   title?: string;
   features: Feature[];
+  maxItems?: number;
   className?: string;
 }
 
 export function FeatureList({
   title,
   features,
+  maxItems = 5,
   className = "",
 }: FeatureListProps) {
+  const emptySlots = Math.max(maxItems - features.length, 0);
+
   return (
     <div className={className}>
       {title && (
@@ -31,6 +35,18 @@ export function FeatureList({
             key={feature.id ?? index}
             label={feature.label}
             highlighted={feature.highlighted}
+          />
+        ))}
+
+        {Array.from({ length: emptySlots }).map((_, index) => (
+          <div
+            key={`empty-${index}`}
+            aria-hidden="true"
+            className="
+              h-9
+              rounded-full
+              bg-white/5
+            "
           />
         ))}
       </div>

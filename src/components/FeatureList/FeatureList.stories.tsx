@@ -25,6 +25,7 @@ type Story = StoryObj<typeof FeatureList>;
 export const ADSLFeatures: Story = {
   args: {
     title: "ADSL FEATURES",
+    maxItems: 5,
     features: [
       {
         id: "download-speed",
@@ -46,6 +47,7 @@ export const ADSLFeatures: Story = {
 export const SoGEAFeatures: Story = {
   args: {
     title: "SoGEA FEATURES",
+    maxItems: 5,
     features: [
       {
         id: "download-speed",
@@ -67,6 +69,7 @@ export const SoGEAFeatures: Story = {
 export const UltrafastFibreFeatures: Story = {
   args: {
     title: "ULTRAFAST FIBRE FEATURES",
+    maxItems: 5,
     features: [
       {
         id: "download-speed",
