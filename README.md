@@ -174,3 +174,104 @@ dist/
 ```
 
 It is recommended to compile `Tailwind` inside the component library and ship the generated `CSS` rather than requiring each application that installs the component library to have to configure `Tailwind`.
+
+### Components
+All reusable `React` components can be found here: `src/components`.
+
+Here is an example of a `Button` component written in `TypeScript` and found here: `src/components/Button/Button.tsx`:
+
+```typescript
+import type { ButtonHTMLAttributes, ReactNode } from "react";
+
+export interface ButtonProps 
+extends ButtonHTMLAttributes<HTMLButtonElement> {
+    children: ReactNode;
+    variant?: "primary" | "outline";
+    icon?: ReactNode;
+}
+
+export function Button({
+    children,
+    variant = "primary",
+    icon,
+    className = "",
+    ...props
+}: ButtonProps) {
+    const baseClasses = "inline-flex items-center justify-center gap-3 rounded-full px-5 py-3 font-semibold transition";
+    const variantClasses = {
+        primary: "bg-cyan-400 text-white hover:brightness-105",
+        outline: "border border-cyan-400 bg-transparent text-white hover:bg-white/5",
+    };
+
+    return (
+        <button
+            className={`
+                ${baseClasses}
+                ${variantClasses[variant]}
+                ${className}
+            `}
+            {...props}
+        >
+            {children}
+
+            {icon && (
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-black">
+                {icon}
+                </span>
+            )}
+        </button>
+    )
+}
+```
+
+When a component is created, it is exported to the `src/index.ts` file:
+
+```typescript
+// src/index.ts
+
+export { Button } from "./components/Button/Button";
+export type { ButtonProps } from "./components/Button/Button";
+```
+
+The component can then be used in an application once the component library has been imported:
+
+```typescript
+import { Button } from "@hackdanismo/component-library-react";
+
+<Button variant="primary">Order now</Button>
+```
+
+The component extends:
+
+```typescript
+ButtonHTMLAttributes<HTMLButtonElement>
+```
+
+So, we can automatically pass normal button props like:
+
+```html
+<Button
+  type="button"
+  disabled
+  onClick={() => console.log("clicked")}
+  aria-label="Order broadband"
+>
+  Order now
+</Button>
+```
+
+`Tailwind` can also be used:
+
+```html
+<Button className="w-full mt-4">
+  Order now
+</Button>
+```
+
+Or, custom classes:
+
+```html
+<Button className="my-special-button">
+  Order now
+</Button>
+```
