@@ -1,5 +1,13 @@
 # Component Library: React
 
+## Import the Library
+To import the library and select components to be included, firstly install the `npm` package and import the CSS and components required:
+
+```typescript
+import "@hackdanismo/component-library-react/style.css";
+import { Button } from "@hackdanismo/component-library-react";
+```
+
 ## Set the Node version
 Within the project root there is a configuration file named `.nvmrc`. `Node Version Manager` is used to manage `Node` versions. Once `NVM` is installed, use the following terminal commands to install and use the `Node` version when inside the project folder:
 
@@ -143,3 +151,26 @@ Within the `src` folder, add a file named `styles.css`:
 
 @import "tailwindcss";
 ```
+
+Within the `src/index.ts` file, import `Tailwind` within the library entry point:
+
+```typescript
+import "./styles.css";
+
+export { Button } from "./components/Button/Button";
+export type { ButtonProps } from "./components/Button/Button";
+```
+
+Now components can contain normal `Tailwind` classes.
+
+When we build the library, `Vite` should emit `CSS` alongside the `JavaScript` bundle, for example:
+
+```
+dist/
+├── index.es.js
+├── index.cjs.js
+├── index.d.ts
+└── style.css
+```
+
+It is recommended to compile `Tailwind` inside the component library and ship the generated `CSS` rather than requiring each application that installs the component library to have to configure `Tailwind`.
