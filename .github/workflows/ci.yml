@@ -1,12 +1,17 @@
 name: CI
 
 on:
+  pull_request:
+    branches:
+      - main
+
   push:
     branches:
       - main
 
 jobs:
   validate:
+    name: Lint, Test and Build
     runs-on: ubuntu-latest
 
     steps:

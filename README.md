@@ -1038,12 +1038,17 @@ To add `CI` to the project, create a folder in the project root named `.github/w
 name: CI
 
 on:
+  pull_request:
+    branches:
+      - main
+
   push:
     branches:
       - main
 
 jobs:
   validate:
+    name: Lint, Test and Build
     runs-on: ubuntu-latest
 
     steps:
