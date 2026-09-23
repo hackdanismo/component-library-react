@@ -1,5 +1,26 @@
 # Component Library: React
 
+## Set the Node version
+Within the project root there is a configuration file named `.nvmrc`. `Node Version Manager` is used to manage `Node` versions. Once `NVM` is installed, use the following terminal commands to install and use the `Node` version when inside the project folder:
+
+```shell
+# Change directory to the component library project folder
+$ cd component-library-react
+# Install the recommended Node version
+$ nvm install
+# Use the Node version
+$ nvm use
+```
+
+To install `NVM`:
+
+```shell
+# Install using cURL
+$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.8/install.sh | bash
+# Install using Wget
+$ wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.8/install.sh | bash
+```
+
 ## Development
 The component library uses `Vite`. To create the project, open the terminal and enter the following command to create the application structure and scaffold:
 
