@@ -275,3 +275,135 @@ Or, custom classes:
   Order now
 </Button>
 ```
+
+### Storybook
+`Storybook` allows us to see each component render in isolation without needing a separate app. From inside the component library, run:
+
+```shell
+$ npx storybook@latest init
+```
+
+`Storybook` will detect the `Vite/React` setup and add the required scripts and files needed. This should generate a `.storybook` folder in the project root.
+
+Within the `components` folder, add a `.stories.tsx` file for each component. Here is the `src/components/Button/Button.stories.tsx` file for the `Button` component.
+
+```typescript
+// src/components/Button/Button.stories.tsx
+
+import type { Meta, StoryObj } from "@storybook/react";
+import { Button } from "./Button";
+
+const meta: Meta<typeof Button> = {
+  title: "Components/Button",
+  component: Button,
+  tags: ["autodocs"],
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Button>;
+
+export const Primary: Story = {
+  args: {
+    children: "Order now",
+    variant: "primary",
+  },
+};
+
+export const Outline: Story = {
+  args: {
+    children: "Explore ADSL",
+    variant: "outline",
+  },
+};
+
+export const WithIcon: Story = {
+  args: {
+    children: "Order now",
+    variant: "primary",
+    icon: "↗",
+  },
+};
+```
+
+To start `Storybook`:
+
+```shell
+$ npm run storybook
+```
+
+This should open here: [http://localhost:6006](http://localhost:6006)
+
+`Storybook` needs to load the same `Tailwind CSS` used by the component library. Within the `.storybook/preview.ts` file, add a link to the `src/styles.css` file from the component library.
+
+```typescript
+import type { Preview } from '@storybook/react-vite'
+
+// Import the styles and Tailwind CSS from the component library into Storybook
+import "../src/styles.css";
+
+const preview: Preview = {
+  parameters: {
+    controls: {
+      matchers: {
+       color: /(background|color)$/i,
+       date: /Date$/i,
+      },
+    },
+
+    a11y: {
+      // 'todo' - show a11y violations in the test UI only
+      // 'error' - fail CI on a11y violations
+      // 'off' - skip a11y checks entirely
+      test: 'todo'
+    }
+  },
+};
+
+export default preview;
+```
+
+To remove the default components that `Storybook` adds, update the `.storybook/main.ts` file from:
+
+```typescript
+import type { StorybookConfig } from '@storybook/react-vite';
+
+const config: StorybookConfig = {
+  "stories": [
+    "../src/**/*.mdx",
+    "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"
+  ],
+  "addons": [
+    "@chromatic-com/storybook",
+    "@storybook/addon-vitest",
+    "@storybook/addon-a11y",
+    "@storybook/addon-docs",
+    "@storybook/addon-onboarding"
+  ],
+  "framework": "@storybook/react-vite"
+};
+export default config;
+```
+
+To this:
+
+```typescript
+import type { StorybookConfig } from '@storybook/react-vite';
+
+const config: StorybookConfig = {
+  stories: [
+    "../src/components/**/*.stories.@(js|jsx|mjs|ts|tsx)"
+  ],
+
+  addons: [
+    "@chromatic-com/storybook",
+    "@storybook/addon-vitest",
+    "@storybook/addon-a11y",
+    "@storybook/addon-docs"
+  ],
+
+  framework: "@storybook/react-vite"
+};
+
+export default config;
+```
