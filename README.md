@@ -1,7 +1,30 @@
 # Component Library: React
+An open-source `React` component library written in `TypeScript` and released under the `MIT licence`.
+
+Tech stack:
+
+- `React`
+- `TypeScript`
+- `Tailwind CSS`
+- `ESLint`
+- `Vitest`
+- `React Testing Library`
 
 ## Import the Library
-To import the library and select components to be included, firstly install the `npm` package and import the CSS and components required:
+To import the library and select components to be included, firstly install the `npm` package.
+
+```shell
+# Change directory into your project
+$ cd your-project
+# Run the install command to import the component library
+$ npm install @hackdanismo/component-library-react
+```
+
+`NPM` page: [https://www.npmjs.com/package/@hackdanismo/component-library-react](https://www.npmjs.com/package/@hackdanismo/component-library-react).
+
+Once installed, this will be added to the `node_modules` folder in your project. The `node_modules` should be added to a `.gitignore` file to prevent it being added to version control.
+
+Import the CSS and components required:
 
 ```typescript
 import "@hackdanismo/component-library-react/component-library-react.css";
@@ -27,6 +50,289 @@ To install `NVM`:
 $ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.8/install.sh | bash
 # Install using Wget
 $ wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.8/install.sh | bash
+```
+
+## NPM Package
+To set the component library to be an `npm` package, we must first update the `package.json` file. The current `package.json` file is this:
+
+```json
+{
+  "name": "component-library-react",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit -p tsconfig.build.json && vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@chromatic-com/storybook": "latest",
+    "@eslint/js": "^10.0.1",
+    "@storybook/addon-a11y": "^10.6.0",
+    "@storybook/addon-docs": "^10.6.0",
+    "@storybook/addon-onboarding": "^10.6.0",
+    "@storybook/addon-vitest": "^10.6.0",
+    "@storybook/react-vite": "^10.6.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "@vitest/browser-playwright": "latest",
+    "@vitest/coverage-v8": "latest",
+    "eslint": "^10.11.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.7",
+    "eslint-plugin-storybook": "^10.6.0",
+    "globals": "^17.12.0",
+    "jsdom": "^30.1.1",
+    "playwright": "latest",
+    "storybook": "^10.6.0",
+    "tailwindcss": "^4.3.3",
+    "typescript": "~6.0.2",
+    "typescript-eslint": "^8.70.1",
+    "vite": "^8.3.0",
+    "vite-plugin-dts": "^5.1.1",
+    "vitest": "^4.1.11"
+  }
+}
+```
+
+Change to this:
+
+```json
+{
+  "name": "@hackdanismo/component-library-react",
+  "version": "0.1.0",
+  "type": "module",
+
+  "main": "./dist/index.cjs.js",
+  "module": "./dist/index.es.js",
+  "types": "./dist/index.d.ts",
+
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.cjs.js"
+    },
+    "./style.css": "./dist/component-library-react.css"
+  },
+
+  "files": [
+    "dist"
+  ],
+
+  "sideEffects": [
+    "**/*.css"
+  ],
+
+  "publishConfig": {
+    "access": "public"
+  },
+
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit -p tsconfig.build.json && vite build",
+    "preview": "vite preview",
+
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+
+    "prepublishOnly": "npm run build"
+  },
+
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  },
+
+  "devDependencies": {
+    "@chromatic-com/storybook": "latest",
+    "@eslint/js": "^10.0.1",
+    "@storybook/addon-a11y": "^10.6.0",
+    "@storybook/addon-docs": "^10.6.0",
+    "@storybook/addon-onboarding": "^10.6.0",
+    "@storybook/addon-vitest": "^10.6.0",
+    "@storybook/react-vite": "^10.6.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "@vitest/browser-playwright": "4.1.11",
+    "@vitest/coverage-v8": "4.1.11",
+    "eslint": "^10.11.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.7",
+    "eslint-plugin-storybook": "^10.6.0",
+    "globals": "^17.12.0",
+    "jsdom": "^30.1.1",
+    "playwright": "latest",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "storybook": "^10.6.0",
+    "tailwindcss": "^4.3.3",
+    "typescript": "~6.0.2",
+    "typescript-eslint": "^8.70.1",
+    "vite": "^8.3.0",
+    "vite-plugin-dts": "^5.1.1",
+    "vitest": "4.1.11"
+  }
+}
+```
+
+Test the package before publishing:
+
+```shell
+$ npm run lint
+$ npm run test:run
+$ npm run build
+```
+
+Then, create a Tarball `.tgz` file to show the package is packed:
+
+```shell
+$ npm pack
+```
+
+Inspect it with:
+
+```shell
+$ tar -tf hackdanismo-component-library-react-0.1.0.tgz
+```
+
+Should see:
+
+```shell
+package/LICENSE
+package/dist/component-library-react.css
+package/dist/index.cjs.js
+package/dist/index.es.js
+package/package.json
+package/README.md
+package/dist/index.d.ts
+```
+
+To test the package locally:
+
+```shell
+$ npm install ../component-library-react/your-package-0.1.0.tgz
+```
+
+Log onto `npm`:
+
+```shell
+$ npm login
+```
+
+Apply Access Token:
+
+```shell
+$ npm config set //registry.npmjs.org/:_authToken=YOUR_TOKEN
+```
+
+Check:
+
+```shell
+$ npm whoami
+```
+
+Publish the package to the `npm` registry:
+
+```shell
+$ npm publish
+```
+
+Within the `package.json`, we don't need to repeat: `--access public` because of this:
+
+```json
+"publishConfig": {
+    "access": "public"
+},
+```
+
+It is worth setting up `2FA` to publish a package to the `npm` registry.
+
+## Clone the Repository
+Inside of `GitHub`, the code repository containing the source code can be cloned here:
+
+```shell
+# Clone using HTTPS
+$ git clone https://github.com/hackdanismo/component-library-react.git
+# Clone using SSH
+$ git clone git@github.com:hackdanismo/component-library-react.git
+```
+
+Once cloned, setup the project locally:
+
+```shell
+# Change directory to the project folder
+$ cd component-library-react
+# Install the packages and dependencies listed in package.json using npm
+$ npm install
+
+# (Optional) Install the Node version using nvm (if installed)
+$ nvm install
+# (Optional) Use the Node version using nvm (if installed)
+$ nvm use
+
+# Run the local development server
+$ npm run dev
+# Run Storybook
+$ npm run storybook
+
+# Run ESLint
+$ npm run lint
+# Run the unit tests for each component
+$ npm run test
+# Check the build passes and no errors are showing
+$ npm run build
+```
+
+Once changes are made, it is good practice to bump the project version number before deploying the package to `npm`:
+
+```shell
+# Bumps the version to x.0.0
+$ npm version major
+# Bumps the version to 0.x.0
+$ npm version minor
+# Bumps the version to 0.0.x
+$ npm version patch
+```
+
+The version will be listed in the `package.json` file.
+
+Check for outdated packages/dependencies:
+
+```shell
+$ npm outdated
 ```
 
 ## Development

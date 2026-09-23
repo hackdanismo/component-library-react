@@ -1,25 +1,56 @@
 {
-  "name": "component-library-react",
-  "private": true,
+  "name": "@hackdanismo/component-library-react",
   "version": "0.1.0",
   "type": "module",
+
+  "main": "./dist/index.cjs.js",
+  "module": "./dist/index.es.js",
+  "types": "./dist/index.d.ts",
+
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.cjs.js"
+    },
+    "./style.css": "./dist/component-library-react.css"
+  },
+
+  "files": [
+    "dist"
+  ],
+
+  "sideEffects": [
+    "**/*.css"
+  ],
+
+  "publishConfig": {
+    "access": "public"
+  },
+
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit -p tsconfig.build.json && vite build",
     "preview": "vite preview",
+
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
 
     "test": "vitest",
     "test:run": "vitest run",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+
+    "prepublishOnly": "npm run build"
   },
-  "dependencies": {
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
   },
+
   "devDependencies": {
     "@chromatic-com/storybook": "latest",
     "@eslint/js": "^10.0.1",
@@ -36,8 +67,8 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "@vitejs/plugin-react": "^6.1.1",
-    "@vitest/browser-playwright": "latest",
-    "@vitest/coverage-v8": "latest",
+    "@vitest/browser-playwright": "4.1.11",
+    "@vitest/coverage-v8": "4.1.11",
     "eslint": "^10.11.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.7",
@@ -45,12 +76,14 @@
     "globals": "^17.12.0",
     "jsdom": "^30.1.1",
     "playwright": "latest",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
     "storybook": "^10.6.0",
     "tailwindcss": "^4.3.3",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.70.1",
     "vite": "^8.3.0",
     "vite-plugin-dts": "^5.1.1",
-    "vitest": "^4.1.11"
+    "vitest": "4.1.11"
   }
 }
