@@ -19,6 +19,10 @@ export interface BusinessDetailsFormProps {
   className?: string;
 }
 
+type BusinessDetailsErrors = Partial<
+  Record<keyof BusinessDetails, string>
+>;
+
 export function BusinessDetailsForm({
   value,
   onChange,
@@ -31,6 +35,9 @@ export function BusinessDetailsForm({
   const [manualAddress, setManualAddress] =
     useState(value.address ?? "");
 
+  const [errors, setErrors] =
+    useState<BusinessDetailsErrors>({});
+
   const updateField = (
     field: keyof BusinessDetails,
     fieldValue: string
@@ -39,6 +46,74 @@ export function BusinessDetailsForm({
       ...value,
       [field]: fieldValue,
     });
+
+    if (errors[field]) {
+      setErrors((current) => ({
+        ...current,
+        [field]: undefined,
+      }));
+    }
+  };
+
+  const validateField = (
+    field: keyof BusinessDetails,
+    fieldValue: string | undefined
+  ) => {
+    const trimmedValue = fieldValue?.trim() ?? "";
+
+    if (field === "companyName" && !trimmedValue) {
+      return "Company name is required";
+    }
+
+    if (field === "contactName" && !trimmedValue) {
+      return "Contact name is required";
+    }
+
+    if (field === "email") {
+      if (!trimmedValue) {
+        return "Email address is required";
+      }
+
+      const emailPattern =
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!emailPattern.test(trimmedValue)) {
+        return "Enter a valid email address";
+      }
+    }
+
+    if (field === "phone") {
+      if (!trimmedValue) {
+        return "Contact number is required";
+      }
+
+      const phonePattern =
+        /^[0-9+\s()-]{7,20}$/;
+
+      if (!phonePattern.test(trimmedValue)) {
+        return "Enter a valid contact number";
+      }
+    }
+
+    if (field === "postcode" && !trimmedValue) {
+      return "Postcode is required";
+    }
+
+    return undefined;
+  };
+
+  const handleBlur = (
+    field: keyof BusinessDetails
+  ) => {
+    const error = validateField(
+      field,
+      value[field]
+    );
+
+    setErrors((current) => ({
+      ...current,
+      [field]: error,
+    }));
   };
 
   const handleAddAddressManually = () => {
@@ -54,6 +129,11 @@ export function BusinessDetailsForm({
     const address = manualAddress.trim();
 
     if (!address) {
+      setErrors((current) => ({
+        ...current,
+        address: "Business address is required",
+      }));
+
       return;
     }
 
@@ -61,6 +141,11 @@ export function BusinessDetailsForm({
       ...value,
       address,
     });
+
+    setErrors((current) => ({
+      ...current,
+      address: undefined,
+    }));
 
     setShowManualAddress(false);
   };
@@ -92,8 +177,12 @@ export function BusinessDetailsForm({
               event.target.value
             )
           }
+          onBlur={() =>
+            handleBlur("companyName")
+          }
           placeholder="*Company name"
           autoComplete="organization"
+          error={errors.companyName}
         />
 
         <FormInput
@@ -104,28 +193,46 @@ export function BusinessDetailsForm({
               event.target.value
             )
           }
+          onBlur={() =>
+            handleBlur("contactName")
+          }
           placeholder="*Contact name"
           autoComplete="name"
+          error={errors.contactName}
         />
 
         <FormInput
           type="email"
           value={value.email}
           onChange={(event) =>
-            updateField("email", event.target.value)
+            updateField(
+              "email",
+              event.target.value
+            )
+          }
+          onBlur={() =>
+            handleBlur("email")
           }
           placeholder="*Email address"
           autoComplete="email"
+          error={errors.email}
         />
 
         <FormInput
           type="tel"
           value={value.phone}
           onChange={(event) =>
-            updateField("phone", event.target.value)
+            updateField(
+              "phone",
+              event.target.value
+            )
+          }
+          onBlur={() =>
+            handleBlur("phone")
           }
           placeholder="*Contact Number"
           autoComplete="tel"
+          error={errors.phone}
         />
 
         <FormInput
@@ -136,8 +243,12 @@ export function BusinessDetailsForm({
               event.target.value
             )
           }
+          onBlur={() =>
+            handleBlur("postcode")
+          }
           placeholder="*Business address postcode"
           autoComplete="postal-code"
+          error={errors.postcode}
         />
       </div>
 
@@ -184,9 +295,18 @@ export function BusinessDetailsForm({
           <textarea
             id="manual-business-address"
             value={manualAddress}
-            onChange={(event) =>
-              setManualAddress(event.target.value)
-            }
+            onChange={(event) => {
+              setManualAddress(
+                event.target.value
+              );
+
+              if (errors.address) {
+                setErrors((current) => ({
+                  ...current,
+                  address: undefined,
+                }));
+              }
+            }}
             placeholder={`Business name
 Address line 1
 Address line 2
@@ -194,13 +314,11 @@ Town / City
 Postcode`}
             rows={5}
             autoComplete="street-address"
-            required
-            className="
+            className={`
               w-full
               resize-y
               rounded-lg
               border
-              border-gray-300
               bg-white
               px-4
               py-3
@@ -212,8 +330,19 @@ Postcode`}
               focus:border-cyan-400
               focus:ring-2
               focus:ring-cyan-400/20
-            "
+              ${
+                errors.address
+                  ? "border-red-500"
+                  : "border-gray-300"
+              }
+            `}
           />
+
+          {errors.address && (
+            <p className="mt-1 px-1 text-xs text-red-600">
+              {errors.address}
+            </p>
+          )}
 
           <div className="mt-4 flex flex-wrap gap-3">
             <Button type="submit">
@@ -226,6 +355,12 @@ Postcode`}
                 setManualAddress(
                   value.address ?? ""
                 );
+
+                setErrors((current) => ({
+                  ...current,
+                  address: undefined,
+                }));
+
                 setShowManualAddress(false);
               }}
               className="
@@ -267,7 +402,9 @@ Postcode`}
           <button
             type="button"
             onClick={() => {
-              setManualAddress(value.address ?? "");
+              setManualAddress(
+                value.address ?? ""
+              );
               setShowManualAddress(true);
             }}
             className="
