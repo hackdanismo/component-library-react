@@ -22,6 +22,9 @@ export interface CheckoutProps {
   onAddAddressManually?: () => void;
   onRemovePackage?: () => void;
 
+  onComplete?: () => void;
+  isProcessing?: boolean;
+
   className?: string;
 }
 
@@ -33,8 +36,21 @@ export function Checkout({
   onPaymentMethodChange,
   onAddAddressManually,
   onRemovePackage,
+  onComplete,
+  isProcessing = false,
   className = "",
 }: CheckoutProps) {
+  const isBusinessDetailsComplete =
+    businessDetails.companyName.trim() !== "" &&
+    businessDetails.contactName.trim() !== "" &&
+    businessDetails.email.trim() !== "" &&
+    businessDetails.phone.trim() !== "" &&
+    businessDetails.postcode.trim() !== "";
+
+  const canComplete =
+    isBusinessDetailsComplete &&
+    Boolean(paymentMethod);
+
   return (
     <section
       className={`
@@ -42,9 +58,11 @@ export function Checkout({
         w-full
         max-w-6xl
         rounded-2xl
-        border border-gray-200
+        border
+        border-gray-200
         bg-white
-        px-5 py-8
+        px-5
+        py-8
         md:px-10
         lg:px-12
         ${className}
@@ -64,22 +82,29 @@ export function Checkout({
           lg:grid-cols-2
         "
       >
-        <BusinessDetailsForm
-          value={businessDetails}
-          onChange={onBusinessDetailsChange}
-          onAddAddressManually={onAddAddressManually}
-          className="h-full"
-        />
+        <div className="order-2 lg:order-1">
+          <BusinessDetailsForm
+            value={businessDetails}
+            onChange={onBusinessDetailsChange}
+            onAddAddressManually={onAddAddressManually}
+            className="h-full"
+          />
+        </div>
 
-        <BasketSummary
-          package={selectedPackage}
-          paymentMethod={paymentMethod}
-          onPaymentMethodChange={
-            onPaymentMethodChange
-          }
-          onRemove={onRemovePackage}
-          className="h-full"
-        />
+        <div className="order-1 lg:order-2">
+          <BasketSummary
+            package={selectedPackage}
+            paymentMethod={paymentMethod}
+            onPaymentMethodChange={
+              onPaymentMethodChange
+            }
+            onRemove={onRemovePackage}
+            onComplete={onComplete}
+            isProcessing={isProcessing}
+            canComplete={canComplete}
+            className="h-full"
+          />
+        </div>
       </div>
     </section>
   );

@@ -86,7 +86,7 @@ describe("PurchaseFlow", () => {
     await user.click(orderButtons[1]);
 
     expect(
-      screen.getByRole("heading", {
+      await screen.findByRole("heading", {
         name: /you have selected SoGEA broadband/i,
       })
     ).toBeInTheDocument();

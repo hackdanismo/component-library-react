@@ -75,12 +75,13 @@ export function Card({
         />
 
         {(primaryAction || secondaryAction) && (
-          <div className="mt-auto flex flex-wrap gap-3 pt-6">
+          <div className="mt-auto flex flex-wrap gap-2 pt-6">
             {primaryAction && (
               <Button
                 variant="primary"
                 icon={primaryAction.icon}
                 onClick={primaryAction.onClick}
+                className="min-w-max flex-1 whitespace-nowrap text-sm"
               >
                 {primaryAction.label}
               </Button>
@@ -91,6 +92,7 @@ export function Card({
                 variant="outline"
                 icon={secondaryAction.icon}
                 onClick={secondaryAction.onClick}
+                className="min-w-max flex-1 whitespace-nowrap text-sm"
               >
                 {secondaryAction.label}
               </Button>
