@@ -1,4 +1,5 @@
 import { defineConfig } from "vite";
+import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import dts from "vite-plugin-dts";
 import { fileURLToPath, URL } from "node:url";
@@ -6,6 +7,7 @@ import { fileURLToPath, URL } from "node:url";
 export default defineConfig({
   plugins: [
     react(),
+    tailwindcss(),
     dts({
       insertTypesEntry: true,
     }),
