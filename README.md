@@ -96,3 +96,50 @@ Once these changes have been made, run the `build` command and `Vite` will build
 ```shell
 $ npm run build
 ```
+
+### Setup Tailwind
+Install `Tailwind` as a package using `NPM`:
+
+```shell
+$ npm install -D tailwindcss @tailwindcss/vite
+```
+
+Once installed, update the `vite.config.ts` configuration file to include `Tailwind`:
+
+```typescript
+import { defineConfig } from "vite";
+import tailwindcss from "@tailwindcss/vite";
+import react from "@vitejs/plugin-react";
+import dts from "vite-plugin-dts";
+import { fileURLToPath, URL } from "node:url";
+
+export default defineConfig({
+  plugins: [
+    react(),
+    tailwindcss(),
+    dts({
+      insertTypesEntry: true,
+    }),
+  ],
+
+  build: {
+    lib: {
+      entry: fileURLToPath(new URL("./src/index.ts", import.meta.url)),
+      formats: ["es", "cjs"],
+      fileName: (format) => `index.${format}.js`,
+    },
+
+    rollupOptions: {
+      external: ["react", "react-dom"],
+    },
+  },
+});
+```
+
+Within the `src` folder, add a file named `styles.css`:
+
+```css
+/* src/styles.css */
+
+@import "tailwindcss";
+```
