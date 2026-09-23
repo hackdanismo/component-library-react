@@ -4,7 +4,7 @@
 To import the library and select components to be included, firstly install the `npm` package and import the CSS and components required:
 
 ```typescript
-import "@hackdanismo/component-library-react/style.css";
+import "@hackdanismo/component-library-react/component-library-react.css";
 import { Button } from "@hackdanismo/component-library-react";
 ```
 
@@ -169,8 +169,8 @@ When we build the library, `Vite` should emit `CSS` alongside the `JavaScript` b
 dist/
 ├── index.es.js
 ├── index.cjs.js
-├── index.d.ts
-└── style.css
+├── index.es.d.ts
+└── component-library-react.css
 ```
 
 It is recommended to compile `Tailwind` inside the component library and ship the generated `CSS` rather than requiring each application that installs the component library to have to configure `Tailwind`.
