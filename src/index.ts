@@ -14,3 +14,5 @@ export type { CardHeaderProps } from "./components/CardHeader/CardHeader";
 export { WifiIcon } from "./components/WifiIcon/WifiIcon";
 export { FeatureList } from "./components/FeatureList/FeatureList";
 export type { FeatureListProps, Feature } from "./components/FeatureList/FeatureList";
+export { PurchaseFlow } from "./components/PurchaseFlow/PurchaseFlow";
+export type { PurchaseFlowProps, PurchaseFlowPackage } from "./components/PurchaseFlow/PurchaseFlow";
