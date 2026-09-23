@@ -1,6 +1,4 @@
-// src/components/CardHeader/CardHeader.stories.tsx
-
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { CardHeader } from "./CardHeader";
 import { WifiIcon } from "../WifiIcon/WifiIcon";
 

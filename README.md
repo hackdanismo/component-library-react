@@ -609,3 +609,119 @@ It maybe also worthwhile installing `Playwright`:
 ```shell
 $ npx playwright install 
 ```
+
+### ESLint
+`ESLint` is used to check for code quality and to highlight potential issues or errors in the code before they reach production.
+
+Begin by installing `ESLint` and any dependencies needed:
+
+```shell
+$ npm install -D eslint @eslint/js typescript-eslint eslint-plugin-react-hooks eslint-plugin-react-refresh
+```
+
+Install `globals` also:
+
+```shell
+$ npm install -D globals
+```
+
+Once installed, create a file in the root of the project folder named: `eslint.config.js` and add the following code:
+
+```javascript
+import js from "@eslint/js";
+import globals from "globals";
+import reactHooks from "eslint-plugin-react-hooks";
+import reactRefresh from "eslint-plugin-react-refresh";
+import tseslint from "typescript-eslint";
+
+export default tseslint.config(
+  {
+    ignores: [
+      "dist",
+      "node_modules",
+      "storybook-static",
+      "coverage",
+    ],
+  },
+
+  js.configs.recommended,
+
+  ...tseslint.configs.recommended,
+
+  {
+    files: ["**/*.{ts,tsx}"],
+
+    languageOptions: {
+      ecmaVersion: 2022,
+
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
+    },
+
+    plugins: {
+      "react-hooks": reactHooks,
+      "react-refresh": reactRefresh,
+    },
+
+    rules: {
+      ...reactHooks.configs.recommended.rules,
+
+      "react-refresh/only-export-components": [
+        "warn",
+        {
+          allowConstantExport: true,
+        },
+      ],
+
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+        },
+      ],
+    },
+  },
+
+  {
+    files: [
+      "**/*.test.{ts,tsx}",
+      "**/*.stories.{ts,tsx}",
+      "src/test/**/*.{ts,tsx}",
+    ],
+
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        describe: "readonly",
+        it: "readonly",
+        expect: "readonly",
+        vi: "readonly",
+        beforeEach: "readonly",
+        afterEach: "readonly",
+      },
+    },
+  }
+);
+```
+
+Add scripts to the `package.json` file:
+
+```json
+{
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  }
+}
+```
+
+To run `ESLint`:
+
+```shell
+$ npm run lint
+# Auto-fix any issues, where possible
+$ npm run lint:fix
+```
