@@ -19,6 +19,7 @@ const dirname =
 export default defineConfig({
   plugins: [
     react(),
+
     tailwindcss(),
 
     dts({
@@ -31,12 +32,19 @@ export default defineConfig({
       entry: fileURLToPath(
         new URL("./src/index.ts", import.meta.url)
       ),
+
       formats: ["es", "cjs"],
+
       fileName: (format) => `index.${format}.js`,
+
+      cssFileName: "component-library-react",
     },
 
-    rollupOptions: {
-      external: ["react", "react-dom"],
+    rolldownOptions: {
+      external: [
+        /^react(?:\/.*)?$/,
+        /^react-dom(?:\/.*)?$/,
+      ],
     },
   },
 
