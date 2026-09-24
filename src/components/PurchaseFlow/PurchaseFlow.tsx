@@ -16,6 +16,7 @@ export interface PurchaseFlowPackage extends Package {
   accentText?: string;
   featuresTitle?: string;
   features?: Feature[];
+  secondaryActionLabel: string;
 }
 
 export interface PurchaseFlowProps {
@@ -355,7 +356,7 @@ export function PurchaseFlow({
                 handleSelectPackage(pkg),
             }}
             secondaryAction={{
-              label: `Explore ${pkg.title}`,
+              label: pkg.secondaryActionLabel,
               icon: "↗",
             }}
           />

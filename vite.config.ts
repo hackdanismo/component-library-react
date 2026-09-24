@@ -23,7 +23,20 @@ export default defineConfig({
     tailwindcss(),
 
     dts({
+      entryRoot: "src",
+      tsconfigPath: "./tsconfig.app.json",
       insertTypesEntry: true,
+      rollupTypes: true,
+
+      include: ["src"],
+
+      exclude: [
+        "src/**/*.test.ts",
+        "src/**/*.test.tsx",
+        "src/**/*.stories.ts",
+        "src/**/*.stories.tsx",
+        "src/test/**",
+      ],
     }),
   ],
 
@@ -40,7 +53,7 @@ export default defineConfig({
       cssFileName: "component-library-react",
     },
 
-    rolldownOptions: {
+    rollupOptions: {
       external: [
         /^react(?:\/.*)?$/,
         /^react-dom(?:\/.*)?$/,
@@ -50,17 +63,12 @@ export default defineConfig({
 
   test: {
     projects: [
-      // ---------------------------------------
-      // Component / unit tests
-      // ---------------------------------------
       {
         extends: true,
 
         test: {
           name: "unit",
-
           environment: "jsdom",
-
           globals: true,
 
           setupFiles: [
@@ -73,9 +81,6 @@ export default defineConfig({
         },
       },
 
-      // ---------------------------------------
-      // Storybook tests
-      // ---------------------------------------
       {
         extends: true,
 
@@ -94,7 +99,6 @@ export default defineConfig({
           browser: {
             enabled: true,
             headless: true,
-
             provider: playwright({}),
 
             instances: [

@@ -11,6 +11,7 @@ const packages = [
     accentText: "broadband",
     connectionFee: 0,
     monthlyPrice: 9.99,
+    secondaryActionLabel: "More about ADSL",
     featuresTitle: "ADSL FEATURES",
     features: [
       {
@@ -25,6 +26,7 @@ const packages = [
     accentText: "broadband",
     connectionFee: 0,
     monthlyPrice: 24.95,
+    secondaryActionLabel: "More about SoGEA",
     featuresTitle: "SoGEA FEATURES",
     features: [
       {
@@ -62,6 +64,18 @@ describe("PurchaseFlow", () => {
         name: /order now/i,
       })
     ).toHaveLength(2);
+
+    expect(
+      screen.getByRole("button", {
+        name: /more about ADSL/i,
+      })
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByRole("button", {
+        name: /more about SoGEA/i,
+      })
+    ).toBeInTheDocument();
   });
 
   it("transitions to checkout when a package is selected", async () => {
