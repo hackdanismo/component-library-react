@@ -81,7 +81,7 @@ export function Card({
                 variant="primary"
                 icon={primaryAction.icon}
                 onClick={primaryAction.onClick}
-                className="min-w-max flex-1 whitespace-nowrap text-sm"
+                className="min-w-max flex-1 whitespace-nowrap text-xs"
               >
                 {primaryAction.label}
               </Button>
@@ -92,7 +92,7 @@ export function Card({
                 variant="outline"
                 icon={secondaryAction.icon}
                 onClick={secondaryAction.onClick}
-                className="min-w-max flex-1 whitespace-nowrap text-sm"
+                className="min-w-max flex-1 whitespace-nowrap text-xs"
               >
                 {secondaryAction.label}
               </Button>
