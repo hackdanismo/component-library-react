@@ -1,4 +1,8 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
+import type {
+  Meta,
+  StoryObj,
+} from "@storybook/react-vite";
+
 import { PurchaseFlow } from "./PurchaseFlow";
 
 const meta = {
@@ -22,6 +26,7 @@ const packages = [
     accentText: "broadband",
     connectionFee: 0,
     monthlyPrice: 9.99,
+    secondaryActionLabel: "More about ADSL",
     description: "Installed at DE1 3FD",
     featuresTitle: "ADSL FEATURES",
     features: [
@@ -47,6 +52,7 @@ const packages = [
     accentText: "broadband",
     connectionFee: 0,
     monthlyPrice: 24.95,
+    secondaryActionLabel: "More about SoGEA",
     description: "Installed at DE1 3FD",
     featuresTitle: "SoGEA FEATURES",
     features: [
@@ -71,6 +77,7 @@ const packages = [
     title: "Ultrafast fibre",
     connectionFee: 0,
     monthlyPrice: 26.95,
+    secondaryActionLabel: "Find out more",
     description: "Installed at DE1 3FD",
     featuresTitle: "ULTRAFAST FIBRE FEATURES",
     features: [
@@ -94,6 +101,32 @@ const packages = [
 export const Default: Story = {
   args: {
     packages,
+    columns: 3,
+  },
+
+  render: (args) => (
+    <div className="min-h-screen bg-[#f5f6fa] p-6 md:p-10">
+      <PurchaseFlow {...args} />
+    </div>
+  ),
+};
+
+export const CustomCtas: Story = {
+  args: {
+    packages: [
+      {
+        ...packages[0],
+        secondaryActionLabel: "Check ADSL availability",
+      },
+      {
+        ...packages[1],
+        secondaryActionLabel: "Learn about SoGEA",
+      },
+      {
+        ...packages[2],
+        secondaryActionLabel: "Explore ultrafast fibre",
+      },
+    ],
     columns: 3,
   },
 
